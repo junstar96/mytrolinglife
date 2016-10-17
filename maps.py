@@ -1,56 +1,26 @@
+import sys
+import os
 from pico2d import *
 
-map = None
-mapnum = None
-
 class Map:
-    image = None
+    image1 = None
+    image2 = None
 
     def __init__(self):
-        self.x, self.y = 0,0
-        image = load_image("큐링온라인.png")
-
-    def get_bb(self):
-        return self.x, self.y, self.x + 800, self.y + 600
+        self.x, self.y = 400,340
+        if self.image1 == None:
+            self.image1 = load_image("map.png")
+        if self.image2 == None:
+            self.image2 = load_image("map.png")
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image1.draw(self.x, self.y, 800, 540)
 
-
-def mapdef():
-    global map
-    global mapnum
-    map = [Map for i in range(9)]
-    mapnum = 0
-
-def crash(a,b):
-    p1,p2,p3,p4 = a.get_bb()
-    map1,map2,map3,map4 = b.get_bb()
-
-    if p1 >= map1: return 1
-    if p2 >= map2: return 2
-    if p3 <= map3: return 3
-    if p4 <= map4: return 4
-
-    return 0
 
 def mapwall(a):
-    global map
-    global mapnum
-    if a == 1 and mapnum > 0:
-        mapnum = mapnum - 1
-        return 1
-    if a == 2 and mapnum/3 > 0:
-        mapnum = mapnum - 3
-        return 2
-    if a == 3 and mapnum < 8:
-        mapnum = mapnum + 1
-        return 3
-    if a == 4 and mapnum/3 < 2:
-        mapnum = mapnum + 3
-        return 4
-    return 0
-
-
-
+    ux,uy,dx,dy = a
+    if ux < 0: return 1
+    if uy < 60: return 2
+    if dx > 800: return 3
+    if dy > 600: return 4
 
