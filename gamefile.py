@@ -25,6 +25,7 @@ class Boy:
         self.x, self.y = 400, 300
         self.ted = False
         self.frame = 0
+        self.xmovepoint = 0
         self.yfream = 0
         self.moveimage = load_image("makeimage2.png")
         self.deadimage = load_image("dead.png")
