@@ -54,6 +54,31 @@ class Boy:
         elif a == 4:
             self.y = 85
 
+    def handle_event(self, event):
+        global xmove
+        global ymove
+        global keymove
+        if event.type == SDL_KEYDOWN:
+            if event.key == SDLK_ESCAPE:
+                running = False
+            elif event.key == SDLK_LEFT:
+                keymove = True
+                xmove = 0
+            elif event.key == SDLK_RIGHT:
+                keymove = True
+                xmove = 1
+            elif event.key == SDLK_UP:
+                keymove = True
+                ymove = 1
+            elif event.key == SDLK_DOWN:
+                keymove = True
+                ymove = 0
+        elif event.type == SDL_KEYUP:
+            if event.key == SDLK_LEFT or event.key == SDLK_RIGHT:
+                xmove = 2
+            elif event.key == SDLK_UP or event.key == SDLK_DOWN:
+                ymove = 2
+
     def move_update(self):
         self.frame = (self.frame + 1)%4
 
@@ -106,33 +131,14 @@ def movestop():
 
 def handle_events():
     global running
-    global xmove
-    global ymove
-    global keymove
+    global boy
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             running = False
-        elif event.type == SDL_KEYDOWN:
-            if event.key == SDLK_ESCAPE:
-               running = False
-            elif event.key == SDLK_LEFT:
-                keymove = True
-                xmove = 0
-            elif event.key == SDLK_RIGHT:
-                keymove = True
-                xmove = 1
-            elif event.key == SDLK_UP:
-                keymove = True
-                ymove = 1
-            elif event.key == SDLK_DOWN:
-                keymove = True
-                ymove = 0
-        elif event.type == SDL_KEYUP:
-            if event.key == SDLK_LEFT or event.key == SDLK_RIGHT:
-                xmove = 2
-            elif event.key == SDLK_UP or event.key == SDLK_DOWN:
-                ymove = 2
+        else:
+            boy.handle_event(event)
+
 
 
 
