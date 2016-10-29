@@ -1,6 +1,9 @@
 import sys
 import os
 from pico2d import *
+import os
+os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
+
 
 num = None
 def get():

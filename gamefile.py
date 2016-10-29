@@ -3,7 +3,8 @@ import sys
 from pico2d import *
 import maps
 import item
-
+import os
+os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 
 
 

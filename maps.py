@@ -1,6 +1,7 @@
 import sys
 import os
 from pico2d import *
+os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 
 class Map:
     image1 = None
