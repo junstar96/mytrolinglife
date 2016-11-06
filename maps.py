@@ -10,9 +10,9 @@ class Map:
     def __init__(self):
         self.x, self.y = 400,340
         if Map.image1 == None:
-            self.image1 = load_image("tileboard.png")
+            Map.image1 = load_image("tileboard.png")
         if Map.image2 == None:
-            self.image2 = load_image("map.png")
+            Map.image2 = load_image("map.png")
 
     def draw(self):
         for i in range(0,21):

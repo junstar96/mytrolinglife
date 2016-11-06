@@ -1,10 +1,12 @@
 import random
 import sys
+import myframe
 from pico2d import *
 import maps
 import item
 import os
 import json
+import police
 os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 
 
@@ -15,10 +17,19 @@ name = "startstate"
 boy = None
 map = None
 items = None
+npc = None
+current_time = 0.0
+font = None
 
 class Boy:
     moveimage = None
     deadimage = None
+
+    pixel_speed = (10.0 / 3)
+    runspeed = 75.0
+    mpm = (runspeed * 1000.0 / 60.0)
+    mps = (mpm / 60.0)
+    pps = (pixel_speed * mps)
 
     LEFT_RUN, RIGHT_RUN, LEFT_STAND, RIGHT_STAND = 0, 1, 2, 3
     UP_RUN, DOWN_RUN, STAND = 4, 5, 6
@@ -93,23 +104,28 @@ class Boy:
                     self.first_y = 0
 
 
-    def update(self):
+    def update(self, frametime):
+        distence = Boy.pps * frametime
         if self.first_y != 0 or self.first_x != 0:
               self.xframe = (self.xframe + 1) % 4
         if self.first_x == 1:
-            self.x = self.x - 10
+            self.x = self.x - (distence)
         elif self.first_x == 2:
-            self.x = self.x + 10
+            self.x = self.x + (distence)
         if self.first_y == 1:
-            self.y = self.y + 10
+            self.y = self.y + (distence)
         elif self.first_y == 2:
-            self.y = self.y - 10
+            self.y = self.y - (distence)
 
     def draw(self):
         if self.ted != True:
             self.moveimage.clip_draw(self.xframe * 35, 455 - (self.yfream + 1) * 45, 35, 45, self.x, self.y,30,40)
         else:
             self.deadimage.clip_draw(self.xframe * 48, 0, 48, 39, self.x, self.y)
+
+
+
+
 
 
     def get_bb(self):
@@ -128,17 +144,25 @@ class Boy:
         if self.life < 0:
            self.dead()
 
+def get_frame_time():
 
+    global current_time
+
+    frame_time = get_time() - current_time
+    current_time += frame_time
+    return frame_time
 
 
 def enter():
     global boy
     global map
-    global items
+    global items, npc, font
     open_canvas()
     boy = Boy()
     map = maps.Map()
+    npc = [police.nonplayerable() for i in range(0, 10)]
     items = item.Item()
+    font = load_font('ENCR10B.TTF', 30)
 
 def exit():
     global boy
@@ -154,12 +178,13 @@ def movestop():
     if xmove == 2 and ymove == 2:
         keymove = False
 
-def handle_events():
+def handle_events(frametime):
     global running
-    global boy
+    global boy, items
     events = get_events()
     for event in events:
         boy.handle_event(event)
+        items.handle_event(event)
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN:
@@ -172,23 +197,40 @@ def main():
     global running, keymove
     global boy
     global map
-    global items
+    global items, npc
+    global font
 
     enter()
 
     while (running):
-        handle_events()
+        frametime = get_frame_time()
+
+        handle_events(frametime)
         clear_canvas()
         map.draw()
         items.draw()
 
         boy.draw()
-        boy.update()
+        boy.update(frametime)
+
+        for i in npc:
+            i.draw()
+            i.moveupdate(frametime)
+            i.checktime()
+            print(i.puttime())
+
+
+
+
+
+
+
+
+
 
         boy.remap(maps.mapwall(boy.get_bb()))
         boy.getdamage(maps.mapwall(boy.get_bb()))
 
-        delay(0.1)
         update_canvas()
         if boy.fin():
             exit()

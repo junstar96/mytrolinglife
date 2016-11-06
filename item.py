@@ -19,7 +19,7 @@ class Item:
 
     def __init__(self):
         self.x = 30
-        self.y = 40
+        self.y = 30
         self.wcount = 5
         self.bcount = 5
         if Item.image1 == None:
@@ -30,16 +30,21 @@ class Item:
             Item.boardimage = load_image("board.png")
 
     def draw(self):
+        for i in range(0, 11):
+            self.boardimage.draw(80*i, 30, 80, 60)
         if self.wcount >= 0:
             self.image1.draw(self.x, self.y, 60,40)
         if self.bcount >= 0:
             self.image2.draw(self.x + 60, self.y, 60,60)
-        for i in range(0, 10):
-            self.boardimage.draw(40*i, 40, 40, 40)
+
 
     def eatwater(self):
         if self.wcount > 0:
             self.wcount = self.wcount - 1;
 
     def handle_event(self, event):
-        pass
+        if event.type == SDL_KEYDOWN:
+            if event.key == SDLK_1:
+                self.wcount = self.wcount - 1
+            elif event.key == SDLK_2:
+                self.bcount = self.bcount - 1
