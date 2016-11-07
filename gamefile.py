@@ -26,10 +26,9 @@ class Boy:
     deadimage = None
 
     pixel_speed = (10.0 / 3)
-    runspeed = 75.0
+    runspeed = 10.0
     mpm = (runspeed * 1000.0 / 60.0)
-    mps = (mpm / 60.0)
-    pps = (pixel_speed * mps)
+    pps = (pixel_speed * mpm)
 
     LEFT_RUN, RIGHT_RUN, LEFT_STAND, RIGHT_STAND = 0, 1, 2, 3
     UP_RUN, DOWN_RUN, STAND = 4, 5, 6
@@ -168,9 +167,11 @@ def exit():
     global boy
     global map
     global items
+    global font
     del(boy)
     del(map)
     del(items)
+    del(font)
     close_canvas()
 
 def movestop():
@@ -217,9 +218,8 @@ def main():
             i.draw()
             i.moveupdate(frametime)
             i.checktime()
+            i.escape(boy.get_bb())
             print(i.puttime())
-
-
 
 
 
