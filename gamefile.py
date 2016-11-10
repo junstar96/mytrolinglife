@@ -2,11 +2,12 @@ import random
 import sys
 import myframe
 from pico2d import *
+from maps import Map
+from item import Item
 import maps
-import item
 import os
 import json
-import police
+from police import nonplayerable
 os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 
 
@@ -20,6 +21,8 @@ items = None
 npc = None
 current_time = 0.0
 font = None
+
+line = None
 
 class Boy:
     moveimage = None
@@ -48,13 +51,17 @@ class Boy:
 
     def remap(self, a):
         if a == 1:
-            self.x = 750
+            self.x = 799
         elif a == 2:
-            self.y = 550
+            self.y = 600
+
         elif a == 3:
-            self.x = 25
+            self.x = 1
+
         elif a == 4:
-            self.y = 85
+            self.y = 60
+
+
 
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:
@@ -156,11 +163,13 @@ def enter():
     global boy
     global map
     global items, npc, font
+    global line
     open_canvas()
     boy = Boy()
-    map = maps.Map()
-    npc = [police.nonplayerable() for i in range(0, 10)]
-    items = item.Item()
+    map = [Map() for i in range(0, 9)]
+    npc = [nonplayerable() for i in range(0, 10)]
+    items = Item()
+    line = 4
     font = load_font('ENCR10B.TTF', 30)
 
 def exit():
@@ -200,6 +209,7 @@ def main():
     global map
     global items, npc
     global font
+    global line
 
     enter()
 
@@ -208,18 +218,20 @@ def main():
 
         handle_events(frametime)
         clear_canvas()
-        map.draw()
+        map[line].draw()
         items.draw()
-
         boy.draw()
+
         boy.update(frametime)
+
+        print(line)
+
 
         for i in npc:
             i.draw()
             i.moveupdate(frametime)
             i.checktime()
             i.escape(boy.get_bb())
-            print(i.puttime())
 
 
 
@@ -232,8 +244,7 @@ def main():
         boy.getdamage(maps.mapwall(boy.get_bb()))
 
         update_canvas()
-        if boy.fin():
-            exit()
+
 
     exit()
 

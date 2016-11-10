@@ -1,5 +1,7 @@
 import sys
 import os
+
+
 from pico2d import *
 os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 
@@ -21,9 +23,10 @@ class Map:
 
 
 def mapwall(a):
-    ux,uy,dx,dy = a
-    if ux < 0: return 1
-    if uy < 60: return 2
-    if dx > 800: return 3
-    if dy > 600: return 4
+    dx, dy, ux, uy = a
+    if dx < -20: return 1
+    if dy < 40: return 2
+    if ux > 820: return 3
+    if uy > 620: return 4
+
 
