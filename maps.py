@@ -2,6 +2,9 @@ import sys
 import os
 
 
+from police import nonplayerable
+
+
 from pico2d import *
 os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 
@@ -11,6 +14,7 @@ class Map:
 
     def __init__(self):
         self.x, self.y = 400,340
+        self.npc = [nonplayerable() for i in range(0, 9)]
         if Map.image1 == None:
             Map.image1 = load_image("tileboard.png")
         if Map.image2 == None:
@@ -20,6 +24,20 @@ class Map:
         for i in range(0,21):
             for j in range(0, 16):
                 self.image1.draw(i*40, j*40, 40,40)
+        for monster in self.npc:
+            monster.draw()
+
+
+    def update(self, frametime):
+        for monster in self.npc:
+            monster.moveupdate(frametime)
+            monster.checktime()
+
+
+    def playercheck(self, a):
+        for monster in self.npc:
+            monster.escape(a.get_bb())
+
 
 
 def mapwall(a):
