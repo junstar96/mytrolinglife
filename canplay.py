@@ -13,6 +13,10 @@ os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 class Boy:
     moveimage = None
     deadimage = None
+    attackleft = None
+    attackright = None
+    attackup = None
+    attackdown = None
 
     pixel_speed = (10.0 / 3)
     runspeed = 10.0
@@ -31,9 +35,21 @@ class Boy:
         self.up, self.down = self.STAND, self.STAND
         self.moveimage = load_image("makeimage2.png")
         self.deadimage = load_image("dead.png")
+        self.attacktime = 0
         self.first_x = 0
         self.first_y = 0
         self.life = 5
+        if Boy.attackleft == None:
+            Boy.attackleft = load_image("left.png")
+        if Boy.attackright == None:
+            Boy.attackright = load_image("right.png")
+        if Boy.attackup == None:
+            Boy.attackup = load_image("up.png")
+        if Boy.attackdown == None:
+            Boy.attackdown = load_image("down.png")
+
+
+
 
     def remap(self, a):
         if a == 1:
@@ -79,6 +95,9 @@ class Boy:
                 self.yfream = 0
                 if self.first_y == 0:
                     self.first_y = 2
+            if event.key == SDLK_x:
+                self.attacktime = 5
+
         if event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
                 self.left = self.LEFT_STAND
@@ -120,11 +139,25 @@ class Boy:
         elif self.first_y == 2:
             self.y = self.y - (distence)
 
+        if self.attacktime > 0:
+            self.attacktime = self.attacktime - 0.3
+
     def draw(self):
         if self.ted != True:
             self.moveimage.clip_draw(self.xframe * 35, 455 - (self.yfream + 1) * 45, 35, 45, self.x, self.y,40,48)
         else:
             self.deadimage.clip_draw(self.xframe * 48, 0, 48, 39, self.x, self.y)
+        if self.attacktime > 0:
+            if self.first_x == 1 and self.first_y == 0:
+                self.attackleft.draw(self.x - 20, self.y, 10, 20)
+            elif self.first_x == 2 and self.first_y == 0:
+                self.attackright.draw(self.x + 20, self.y, 10, 20)
+            elif self.yfream == 0:
+                self.attackdown.draw(self.x, self.y - 20, 20, 10)
+            elif self.yfream == 4:
+                self.attackup.draw(self.x, self.y + 20, 20, 10)
+
+
 
 
 
