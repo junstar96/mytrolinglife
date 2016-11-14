@@ -2,6 +2,8 @@ import sys
 import os
 import random
 import math
+
+from item import Item
 from pico2d import *
 os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 npc = None
@@ -10,6 +12,7 @@ class nonplayerable:
     protectableimage = None
     atteckableimage = None
     checkmove = None
+    item = None
 
     typeA, typeB = 0, 1
 
@@ -43,6 +46,9 @@ class nonplayerable:
             nonplayerable.atteckableimage = load_image("makeimage2.png")
         if nonplayerable.checkmove == None:
             nonplayerable.checkmove = load_image("find.png")
+
+    def putpoint(self):
+        return self.x, self.y
 
 
     def draw(self):
@@ -93,58 +99,59 @@ class nonplayerable:
 
     def moveupdate(self, frametime):
         distence = nonplayerable.pps * frametime
-        if self.emergy == False:
-            if self.movestate == self.left:
-                self.xframe = (self.xframe + 1) % 4
-                self.movetime = self.movetime - 1
-                if self.x > 0:
-                    self.x = self.x - (distence)
-            elif self.movestate == self.right:
-                self.xframe = (self.xframe + 1) % 4
-                self.movetime = self.movetime - 1
-                if self.x < 800:
-                    self.x = self.x + (distence)
-            else:
-                self.xframe = 0
-                self.stoptime = self.stoptime - 1
-            if self.ymove == self.up:
-                self.yfream = 4
-                if self.y <= 600:
-                    self.y = self.y + (distence)
-                self.ymovetime = self.ymovetime - 1
-            elif self.ymove == self.down:
-                self.yfream = 0
-                if self.y >= 60:
-                    self.y = self.y - (distence)
-                self.ymovetime = self.ymovetime - 1
-            elif self.ymove == self.stop:
-                self.ystoptime = self.ystoptime - 1
-        elif self.emergy == True:
-            if self.movestate == self.left:
-                self.xframe = (self.xframe + 1) % 4
-                self.movetime = self.movetime - 1
-                if self.x > 0:
-                    self.x = self.x - (distence)
-            elif self.movestate == self.right:
-                self.xframe = (self.xframe + 1) % 4
-                self.movetime = self.movetime - 1
-                if self.x < 800:
-                    self.x = self.x + (distence)
-            else:
-                self.xframe = 0
-                self.stoptime = self.stoptime - 1
-            if self.ymove == self.up:
-                self.yfream = 4
-                if self.y <= 600:
-                    self.y = self.y + (distence)
-                self.ymovetime = self.ymovetime - 1
-            elif self.ymove == self.down:
-                self.yfream = 0
-                if self.y >= 60:
-                    self.y = self.y - (distence)
-                self.ymovetime = self.ymovetime - 1
-            elif self.ymove == self.stop:
-                self.ystoptime = self.ystoptime - 1
+        if self.life > 0:
+            if self.emergy == False:
+                if self.movestate == self.left:
+                    self.xframe = (self.xframe + 1) % 4
+                    self.movetime = self.movetime - 1
+                    if self.x > 0:
+                        self.x = self.x - (distence)
+                elif self.movestate == self.right:
+                    self.xframe = (self.xframe + 1) % 4
+                    self.movetime = self.movetime - 1
+                    if self.x < 800:
+                        self.x = self.x + (distence)
+                else:
+                    self.xframe = 0
+                    self.stoptime = self.stoptime - 1
+                if self.ymove == self.up:
+                    self.yfream = 4
+                    if self.y <= 600:
+                        self.y = self.y + (distence)
+                    self.ymovetime = self.ymovetime - 1
+                elif self.ymove == self.down:
+                    self.yfream = 0
+                    if self.y >= 60:
+                        self.y = self.y - (distence)
+                    self.ymovetime = self.ymovetime - 1
+                elif self.ymove == self.stop:
+                    self.ystoptime = self.ystoptime - 1
+            elif self.emergy == True:
+                if self.movestate == self.left:
+                    self.xframe = (self.xframe + 1) % 4
+                    self.movetime = self.movetime - 1
+                    if self.x > 0:
+                        self.x = self.x - (distence)
+                elif self.movestate == self.right:
+                    self.xframe = (self.xframe + 1) % 4
+                    self.movetime = self.movetime - 1
+                    if self.x < 800:
+                        self.x = self.x + (distence)
+                else:
+                    self.xframe = 0
+                    self.stoptime = self.stoptime - 1
+                if self.ymove == self.up:
+                    self.yfream = 4
+                    if self.y <= 600:
+                        self.y = self.y + (distence)
+                    self.ymovetime = self.ymovetime - 1
+                elif self.ymove == self.down:
+                    self.yfream = 0
+                    if self.y >= 60:
+                        self.y = self.y - (distence)
+                    self.ymovetime = self.ymovetime - 1
+                elif self.ymove == self.stop:
+                    self.ystoptime = self.ystoptime - 1
 
 
 
@@ -153,15 +160,17 @@ class nonplayerable:
         return self.ymove
 
     def escape(self, player):
-        downx, downy, upx, upy = player
+        downx, downy, upx, upy = player.get_bb()
         xcheck = (self.x - (downx + 15))*(self.x - (downx + 15))
         ycheck = (self.y - (downy + 20))*(self.y - (downy + 20))
 
         r = math.sqrt(xcheck + ycheck)
         if r < 100:
             self.emergy = True
-            if r < 30:
+            if r < 30 and player.getattack() > 0:
                 self.life = 0
+
+
 
 
 

@@ -17,6 +17,7 @@ class Boy:
     attackright = None
     attackup = None
     attackdown = None
+    font = None
 
     pixel_speed = (10.0 / 3)
     runspeed = 10.0
@@ -47,6 +48,11 @@ class Boy:
             Boy.attackup = load_image("up.png")
         if Boy.attackdown == None:
             Boy.attackdown = load_image("down.png")
+        if Boy.font == None:
+            Boy.font = load_font("ENCR10B.TTF", 25)
+
+    def getattack(self):
+        return self.attacktime
 
 
 
@@ -96,7 +102,7 @@ class Boy:
                 if self.first_y == 0:
                     self.first_y = 2
             if event.key == SDLK_x:
-                self.attacktime = 5
+                self.attacktime = 15
 
         if event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
@@ -149,13 +155,14 @@ class Boy:
             self.deadimage.clip_draw(self.xframe * 48, 0, 48, 39, self.x, self.y)
         if self.attacktime > 0:
             if self.first_x == 1 and self.first_y == 0:
-                self.attackleft.draw(self.x - 20, self.y, 10, 20)
+                self.attackleft.draw(self.x - 20 - (20 - self.attacktime), self.y, 10, 20)
             elif self.first_x == 2 and self.first_y == 0:
-                self.attackright.draw(self.x + 20, self.y, 10, 20)
+                self.attackright.draw(self.x + 20 + (20 - self.attacktime), self.y, 10, 20)
             elif self.yfream == 0:
-                self.attackdown.draw(self.x, self.y - 20, 20, 10)
+                self.attackdown.draw(self.x, self.y - 20 - (20 - self.attacktime), 20, 10)
             elif self.yfream == 4:
-                self.attackup.draw(self.x, self.y + 20, 20, 10)
+                self.attackup.draw(self.x, self.y + 20 + (20 - self.attacktime), 20, 10)
+        self.font.draw(240, 30, "life : %d" % self.life)
 
 
 

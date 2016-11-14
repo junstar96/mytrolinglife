@@ -36,7 +36,7 @@ class Map:
 
     def playercheck(self, a):
         for monster in self.npc:
-            monster.escape(a.get_bb())
+            monster.escape(a)
 
 
 

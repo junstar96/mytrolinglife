@@ -1,5 +1,6 @@
 import sys
 import os
+import random
 from pico2d import *
 import os
 os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
@@ -22,6 +23,7 @@ class Item:
         self.y = 30
         self.wcount = 5
         self.bcount = 5
+        self.type = 0
         if Item.image1 == None:
             Item.image1 = load_image("wateritem.png")
         if Item.image2 == None:
@@ -36,6 +38,16 @@ class Item:
             self.image1.draw(self.x, self.y, 60,40)
         if self.bcount >= 0:
             self.image2.draw(self.x + 60, self.y, 60,60)
+
+    def gettype(self):
+        self.type = random.randint(-1, 2)
+
+    def dropdraw(self, a):
+        point_x, point_y = a.putpoint()
+        if self.type == 0:
+            self.image1.draw(point_x, point_y, 30,20)
+        elif self.type == 1:
+            self.image2.draw(point_x, point_y, 30,30)
 
 
     def eatwater(self):
