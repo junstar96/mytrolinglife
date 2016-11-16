@@ -40,12 +40,14 @@ class nonplayerable:
         self.movestate = random.randrange(self.left, self.right+1)
         self.ymove = self.stop
         self.emergy = False
+        self.item = Item()
         if nonplayerable.protectableimage == None:
             nonplayerable.protectableimage = load_image("makeimage2.png")
         if nonplayerable.atteckableimage == None:
             nonplayerable.atteckableimage = load_image("makeimage2.png")
         if nonplayerable.checkmove == None:
             nonplayerable.checkmove = load_image("find.png")
+        self.item.gettype();
 
     def putpoint(self):
         return self.x, self.y
@@ -59,8 +61,11 @@ class nonplayerable:
             elif self.type == nonplayerable.typeB:
                 if self.life > 1:
                     self.atteckableimage.clip_draw(self.xframe * 35, 455 - (self.yfream + 1) * 45, 35, 45, self.x, self.y,30,40)
-        if self.emergy == True:
-            self.checkmove.draw(self.x, self.y + 40, 20, 20)
+            if self.emergy == True:
+                self.checkmove.draw(self.x, self.y + 40, 20, 20)
+        else:
+            self.item.dropdraw(self.x, self.y)
+
 
 
     def crashrange(self):
@@ -152,8 +157,8 @@ class nonplayerable:
                     self.ymovetime = self.ymovetime - 1
                 elif self.ymove == self.stop:
                     self.ystoptime = self.ystoptime - 1
-
-
+        else:
+            pass
 
 
     def puttime(self):

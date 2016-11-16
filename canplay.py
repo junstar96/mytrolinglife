@@ -1,8 +1,6 @@
 import random
 import sys
-import myframe
 from pico2d import *
-from maps import Map
 from item import Item
 import maps
 import os
@@ -40,6 +38,8 @@ class Boy:
         self.first_x = 0
         self.first_y = 0
         self.life = 5
+        self.killcount = 0
+        self.safecount = 0
         if Boy.attackleft == None:
             Boy.attackleft = load_image("left.png")
         if Boy.attackright == None:
@@ -162,9 +162,11 @@ class Boy:
                 self.attackdown.draw(self.x, self.y - 20 - (20 - self.attacktime), 20, 10)
             elif self.yfream == 4:
                 self.attackup.draw(self.x, self.y + 20 + (20 - self.attacktime), 20, 10)
-        self.font.draw(240, 30, "life : %d" % self.life)
+        self.font.draw(240, 30, "life : %d  kill : %d  safe : %d" % (self.life, self.killcount, self.safecount))
 
 
+    def get_kill(self):
+        pass
 
 
 
