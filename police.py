@@ -13,6 +13,10 @@ class nonplayerable:
     atteckableimage = None
     checkmove = None
     item = None
+    attackleft = None
+    attackright = None
+    attackup = None
+    attackdown = None
 
     typeA, typeB = 0, 1
 
@@ -29,7 +33,7 @@ class nonplayerable:
 
     def __init__(self):
         self.x, self.y = random.randint(100, 700), random.randint(80, 560)
-        self.type = random.randrange(nonplayerable.typeA, nonplayerable.typeB)
+        self.type = random.randrange(nonplayerable.typeA, nonplayerable.typeB + 1)
         self.life = random.randint(100, 150)
         self.movetime = 0
         self.ymovetime = 0
@@ -41,6 +45,8 @@ class nonplayerable:
         self.ymove = self.stop
         self.emergy = False
         self.item = Item()
+
+        self.targetx, self.targety = 0,0
         if nonplayerable.protectableimage == None:
             nonplayerable.protectableimage = load_image("makeimage2.png")
         if nonplayerable.atteckableimage == None:
@@ -132,31 +138,43 @@ class nonplayerable:
                 elif self.ymove == self.stop:
                     self.ystoptime = self.ystoptime - 1
             elif self.emergy == True:
-                if self.movestate == self.left:
-                    self.xframe = (self.xframe + 1) % 4
-                    self.movetime = self.movetime - 1
-                    if self.x > 0:
-                        self.x = self.x - (distence)
-                elif self.movestate == self.right:
-                    self.xframe = (self.xframe + 1) % 4
-                    self.movetime = self.movetime - 1
-                    if self.x < 800:
-                        self.x = self.x + (distence)
-                else:
-                    self.xframe = 0
-                    self.stoptime = self.stoptime - 1
-                if self.ymove == self.up:
-                    self.yfream = 4
-                    if self.y <= 600:
-                        self.y = self.y + (distence)
-                    self.ymovetime = self.ymovetime - 1
-                elif self.ymove == self.down:
-                    self.yfream = 0
-                    if self.y >= 60:
-                        self.y = self.y - (distence)
-                    self.ymovetime = self.ymovetime - 1
-                elif self.ymove == self.stop:
-                    self.ystoptime = self.ystoptime - 1
+               if self.type == self.typeA:
+                   if self.targetx < self.x:
+                       self.xframe = (self.xframe + 1) % 4
+                       if self.x > 0:
+                           self.x = self.x - (distence)
+                   elif self.targetx > self.x:
+                       self.xframe = (self.xframe + 1) % 4
+                       if self.x < 800:
+                           self.x = self.x + (distence)
+                   if self.targety > self.y:
+                       self.yfream = 4
+                       if self.y <= 600:
+                           self.y = self.y + (distence)
+                   elif self.targety < self.y:
+                       self.yfream = 0
+                       if self.y >= 60:
+                           self.y = self.y - (distence)
+               elif self.type == self.typeB:
+                   if self.targetx < self.x:
+                       self.xframe = (self.xframe + 1) % 4
+                       if self.x < 800:
+                           self.x = self.x + (distence)
+                   elif self.targetx > self.x:
+                       self.xframe = (self.xframe + 1) % 4
+                       if self.x > 0:
+                           self.x = self.x - (distence)
+                   if self.targety > self.y:
+                       self.yfream = 0
+                       if self.y >= 60:
+                           self.y = self.y - (distence)
+                   elif self.targety < self.y:
+                       self.yfream = 4
+                       if self.y <= 600:
+                           self.y = self.y + (distence)
+
+
+
         else:
             pass
 
@@ -166,10 +184,12 @@ class nonplayerable:
 
     def escape(self, player):
         downx, downy, upx, upy = player.get_bb()
-        xcheck = (self.x - (downx + 15))*(self.x - (downx + 15))
-        ycheck = (self.y - (downy + 20))*(self.y - (downy + 20))
+        mathx = (self.x - (downx + 15))*(self.x - (downx + 15))
+        mathy = (self.y - (downy + 20))*(self.y - (downy + 20))
+        self.targetx = downx + 15
+        self.targety = downy + 20
 
-        r = math.sqrt(xcheck + ycheck)
+        r = math.sqrt(mathx + mathy)
         if r < 100:
             self.emergy = True
             if r < 30 and player.getattack() > 0:
