@@ -18,6 +18,7 @@ class nonplayerable:
     attackup = None
     attackdown = None
 
+
     typeA, typeB = 0, 1
 
     left, right, leftstop, rightstop = 100,101, 500, 501
@@ -41,6 +42,8 @@ class nonplayerable:
         self.stoptime = 0
         self.xframe = 0
         self.yfream = 0
+        self.countkill = 0
+        self.countsafe = 0
         self.movestate = random.randrange(self.left, self.right+1)
         self.ymove = self.stop
         self.emergy = False
@@ -54,6 +57,8 @@ class nonplayerable:
         if nonplayerable.checkmove == None:
             nonplayerable.checkmove = load_image("find.png")
         self.item.gettype();
+
+
 
     def putpoint(self):
         return self.x, self.y
@@ -194,6 +199,10 @@ class nonplayerable:
             self.emergy = True
             if r < 30 and player.getattack() > 0:
                 self.life = 0
+
+    def checkpoint(self, a):
+        self.countkill, self.countsafe = a
+
 
 
 

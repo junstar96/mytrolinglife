@@ -188,3 +188,6 @@ class Boy:
         self.life = self.life - 0.5 and self.xframe == 0
         if self.life < 0:
            self.dead()
+
+    def putcount(self):
+        return self.killcount, self.safecount

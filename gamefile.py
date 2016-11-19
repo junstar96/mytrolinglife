@@ -19,7 +19,6 @@ name = "startstate"
 boy = None
 map = None
 items = None
-npc = None
 current_time = 0.0
 font = None
 
@@ -37,12 +36,11 @@ def get_frame_time():
 def enter():
     global boy
     global map
-    global items, npc, font
+    global items, font
     global line
     open_canvas()
     boy = Boy()
     map = [Map() for i in range(0, 9)]
-    npc = [nonplayerable() for i in range(0, 10)]
     items = Item()
     line = 4
     font = load_font('ENCR10B.TTF', 30)
@@ -71,7 +69,7 @@ def handle_events(frametime):
         boy.handle_event(event)
         items.handle_event(event)
         if event.type == SDL_QUIT:
-            running = False
+            myframe.quit()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:
                 running = False
@@ -103,57 +101,31 @@ def linewall():
         else:
             boy.notmove(maps.mapwall(boy.get_bb()))
 
-
-
-def main():
-    global xmove, ymove
-    global running, keymove
+def update(frametime):
     global boy
     global map
-    global items, npc
-    global font
-    global line
+    global items
 
-    enter()
+    boy.update(frametime)
+    map[line].update(frametime)
 
-    while (running):
-        frametime = get_frame_time()
+    linewall()
 
-        handle_events(frametime)
-        clear_canvas()
-        map[line].draw()
-        items.draw()
-        boy.draw()
+    print(line)
 
+    map[line].playercheck(boy)
 
+def draw(frametime):
+    global boy
+    global map
+    global items
 
-        boy.update(frametime)
-        map[line].update(frametime)
-        linewall()
+    clear_canvas()
+    map[line].draw()
+    items.draw()
+    boy.draw()
 
-
-
-        print(line)
-
-        map[line].playercheck(boy)
-
-
-
-
-
-
-
-
-
-        #boy.getdamage(maps.mapwall(boy.get_bb()))
-
-        update_canvas()
-
-
-    exit()
-
-if __name__ == '__main__':
-    main()
+    update_canvas()
 
 
 
