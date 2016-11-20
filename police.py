@@ -53,7 +53,7 @@ class nonplayerable:
         if nonplayerable.protectableimage == None:
             nonplayerable.protectableimage = load_image("makeimage2.png")
         if nonplayerable.atteckableimage == None:
-            nonplayerable.atteckableimage = load_image("makeimage2.png")
+            nonplayerable.atteckableimage = load_image("tank1.gif")
         if nonplayerable.checkmove == None:
             nonplayerable.checkmove = load_image("find.png")
         self.item.gettype();
@@ -65,17 +65,21 @@ class nonplayerable:
 
 
     def draw(self):
-        if self.life > 0:
-            if self.type == nonplayerable.typeA:
-                if self.life > 1:
-                    self.protectableimage.clip_draw(self.xframe * 35, 455 - (self.yfream + 1) * 45, 35, 45, self.x, self.y,30,40)
-            elif self.type == nonplayerable.typeB:
-                if self.life > 1:
-                    self.atteckableimage.clip_draw(self.xframe * 35, 455 - (self.yfream + 1) * 45, 35, 45, self.x, self.y,30,40)
-            if self.emergy == True:
-                self.checkmove.draw(self.x, self.y + 40, 20, 20)
-        else:
-            self.item.dropdraw(self.x, self.y)
+        if self.type == nonplayerable.typeA:
+            if self.life > 1:
+                self.protectableimage.clip_draw(self.xframe * 35, 455 - (self.yfream + 1) * 45, 35, 45, self.x, self.y,
+                                                30, 40)
+            else:
+                self.item.dropdraw(self.x, self.y)
+        elif self.type == nonplayerable.typeB:
+            if self.life > 1:
+                self.atteckableimage.clip_draw(self.xframe * 35, 455 - (self.yfream + 1) * 45, 35, 45, self.x, self.y,
+                                               30, 40)
+            else:
+                self.item.dropdraw(self.x, self.y)
+        if self.emergy == True:
+            self.checkmove.draw(self.x, self.y + 40, 20, 20)
+
 
 
 
@@ -202,6 +206,12 @@ class nonplayerable:
 
     def checkpoint(self, a):
         self.countkill, self.countsafe = a
+
+    def livecheck(self):
+        if self.life > 0:
+            return 0
+        else:
+            return 1
 
 
 

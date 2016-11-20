@@ -191,3 +191,8 @@ class Boy:
 
     def putcount(self):
         return self.killcount, self.safecount
+
+
+    def killcheck(self, count):
+        self.killcount = count
+

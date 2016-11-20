@@ -14,7 +14,7 @@ class Map:
 
     def __init__(self):
         self.x, self.y = 400,340
-        self.npc = [nonplayerable() for i in range(0, 9)]
+        self.npc = [nonplayerable() for i in range(0, 4)]
         if Map.image1 == None:
             Map.image1 = load_image("tileboard.png")
         if Map.image2 == None:
@@ -38,6 +38,9 @@ class Map:
         for monster in self.npc:
             monster.escape(a)
 
+    def returnnpc(self):
+        return self.npc
+
 
 
 def mapwall(a):
@@ -46,5 +49,7 @@ def mapwall(a):
     if dy < 40: return 2
     if ux > 820: return 3
     if uy > 620: return 4
+
+
 
 
