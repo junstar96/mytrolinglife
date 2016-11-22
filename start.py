@@ -1,5 +1,5 @@
 import myframe
 
-import gamefile
+import startprint
 
-myframe.run(gamefile)
+myframe.run(startprint)

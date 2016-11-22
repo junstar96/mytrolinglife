@@ -53,7 +53,7 @@ class nonplayerable:
         if nonplayerable.protectableimage == None:
             nonplayerable.protectableimage = load_image("makeimage2.png")
         if nonplayerable.atteckableimage == None:
-            nonplayerable.atteckableimage = load_image("tank1.gif")
+            nonplayerable.atteckableimage = load_image("makeimage2.png")
         if nonplayerable.checkmove == None:
             nonplayerable.checkmove = load_image("find.png")
         self.item.gettype();

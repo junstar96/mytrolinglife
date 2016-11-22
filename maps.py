@@ -1,6 +1,6 @@
 import sys
 import os
-
+import random
 
 from police import nonplayerable
 
@@ -14,6 +14,7 @@ class Map:
 
     def __init__(self):
         self.x, self.y = 400,340
+        self.tankx, self.tanky = 820,  random.randint(120, 540)
         self.npc = [nonplayerable() for i in range(0, 4)]
         if Map.image1 == None:
             Map.image1 = load_image("tileboard.png")
