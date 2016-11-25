@@ -17,6 +17,7 @@ class nonplayerable:
     attackright = None
     attackup = None
     attackdown = None
+    sound = None
 
 
     typeA, typeB = 0, 1
@@ -48,6 +49,10 @@ class nonplayerable:
         self.ymove = self.stop
         self.emergy = False
         self.item = Item()
+        self.speak = False
+        if nonplayerable.sound == None:
+            nonplayerable.sound = load_music("The+Very+First+Wilhelm+Scream.mp3")
+            nonplayerable.sound.set_volume(32)
 
         self.targetx, self.targety = 0,0
         if nonplayerable.protectableimage == None:
@@ -62,6 +67,9 @@ class nonplayerable:
 
     def putpoint(self):
         return self.x, self.y
+
+    def checklife(self):
+        return self.life
 
 
     def draw(self):
@@ -79,6 +87,13 @@ class nonplayerable:
                 self.item.dropdraw(self.x, self.y)
         if self.emergy == True:
             self.checkmove.draw(self.x, self.y + 40, 20, 20)
+
+
+    def deadsound(self):
+        if self.speak == False:
+            self.sound.play()
+            self.speak = True
+
 
 
 

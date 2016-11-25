@@ -33,6 +33,9 @@ class Map:
         for monster in self.npc:
             monster.moveupdate(frametime)
             monster.checktime()
+            if monster.checklife() <= 0:
+                monster.deadsound()
+
 
 
     def playercheck(self, a):
