@@ -45,6 +45,8 @@ class nonplayerable:
         self.yfream = 0
         self.countkill = 0
         self.countsafe = 0
+        self.attacktime = 0
+        self.attackdelay = 0
         self.movestate = random.randrange(self.left, self.right+1)
         self.ymove = self.stop
         self.emergy = False
@@ -62,6 +64,17 @@ class nonplayerable:
         if nonplayerable.checkmove == None:
             nonplayerable.checkmove = load_image("find.png")
         self.item.gettype();
+
+        if nonplayerable.attackleft == None:
+            nonplayerable.attackleft = load_image("left.png")
+        if nonplayerable.attackright == None:
+            nonplayerable.attackright = load_image("right.png")
+        if nonplayerable.attackup == None:
+            nonplayerable.attackup = load_image("up.png")
+        if nonplayerable.attackdown == None:
+            nonplayerable.attackdown = load_image("down.png")
+
+
 
 
 
@@ -196,6 +209,15 @@ class nonplayerable:
                        self.yfream = 4
                        if self.y <= 600:
                            self.y = self.y + (distence)
+                   if self.attacktime > 0:
+                       self.attacktime = self.attacktime - 1
+                       if self.attacktime <= 0:
+                           self.attackdelay = 5
+                   elif self.attackdelay > 0:
+                       self.attackdelay = self.attackdelay - 1
+                       if self.attackdelay <= 0:
+                            self.attacktime = 5
+
 
 
 
@@ -216,6 +238,7 @@ class nonplayerable:
         r = math.sqrt(mathx + mathy)
         if r < 100:
             self.emergy = True
+            self.attacktime = 5;
             if r < 30 and player.getattack() > 0:
                 self.life = 0
 
