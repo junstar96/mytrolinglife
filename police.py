@@ -45,13 +45,15 @@ class nonplayerable:
         self.yfream = 0
         self.countkill = 0
         self.countsafe = 0
-        self.attacktime = 0
-        self.attackdelay = 0
+        self.attacktime = 1
+        self.attackdelay = 1
         self.movestate = random.randrange(self.left, self.right+1)
         self.ymove = self.stop
         self.emergy = False
         self.item = Item()
         self.speak = False
+        self.attackvector = 0 # 0은 밑 1은 위 2는 왼쪽, 3은 오른쪽
+
         if nonplayerable.sound == None:
             nonplayerable.sound = load_music("The+Very+First+Wilhelm+Scream.mp3")
             nonplayerable.sound.set_volume(32)
@@ -63,7 +65,7 @@ class nonplayerable:
             nonplayerable.atteckableimage = load_image("makeimage2.png")
         if nonplayerable.checkmove == None:
             nonplayerable.checkmove = load_image("find.png")
-        self.item.gettype();
+        self.item.gettype()
 
         if nonplayerable.attackleft == None:
             nonplayerable.attackleft = load_image("left.png")
@@ -90,16 +92,27 @@ class nonplayerable:
             if self.life > 1:
                 self.protectableimage.clip_draw(self.xframe * 35, 455 - (self.yfream + 1) * 45, 35, 45, self.x, self.y,
                                                 30, 40)
+                if self.emergy == True:
+                    if self.attacktime > 0:
+                        if self.attackvector == 0:
+                            self.attackdown.draw(self.x, self.y - (50 - self.attacktime), 9, 18)
+                        elif self.attackvector == 1:
+                            self.attackup.draw(self.x, self.y + (50 - self.attacktime), 9, 18)
             else:
                 self.item.dropdraw(self.x, self.y)
         elif self.type == nonplayerable.typeB:
             if self.life > 1:
                 self.atteckableimage.clip_draw(self.xframe * 35, 455 - (self.yfream + 1) * 45, 35, 45, self.x, self.y,
                                                30, 40)
+
             else:
                 self.item.dropdraw(self.x, self.y)
         if self.emergy == True:
-            self.checkmove.draw(self.x, self.y + 40, 20, 20)
+            if self.life > 0:
+                self.checkmove.draw(self.x, self.y + 40, 20, 20)
+
+
+
 
 
     def deadsound(self):
@@ -141,6 +154,22 @@ class nonplayerable:
             else:
                 self.ymove = self.down
             self.ymovetime = random.randint(30, 400)
+
+        if self.attacktime >= 0:
+            self.attacktime -= 0.5
+            if self.attacktime == 0:
+               self.attackdelay = 25
+        elif self.attackdelay >= 0:
+            self.attackdelay -= 0.5
+            if self.attackdelay == 0:
+               self.attacktime = 25
+               if self.targety > self.y:
+                   self.attackvector = 1
+               elif self.targety < self.y:
+                   self.attackvector = 0
+
+
+
 
 
 
@@ -209,14 +238,7 @@ class nonplayerable:
                        self.yfream = 4
                        if self.y <= 600:
                            self.y = self.y + (distence)
-                   if self.attacktime > 0:
-                       self.attacktime = self.attacktime - 1
-                       if self.attacktime <= 0:
-                           self.attackdelay = 5
-                   elif self.attackdelay > 0:
-                       self.attackdelay = self.attackdelay - 1
-                       if self.attackdelay <= 0:
-                            self.attacktime = 5
+
 
 
 
@@ -238,7 +260,6 @@ class nonplayerable:
         r = math.sqrt(mathx + mathy)
         if r < 100:
             self.emergy = True
-            self.attacktime = 5;
             if r < 30 and player.getattack() > 0:
                 self.life = 0
 
