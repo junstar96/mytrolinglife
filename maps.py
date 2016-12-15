@@ -11,6 +11,7 @@ os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 class Map:
     image1 = None
     image2 = None
+    backgroundsound = None
 
     def __init__(self):
         self.x, self.y = 400,340
@@ -20,6 +21,8 @@ class Map:
             Map.image1 = load_image("tileboard.png")
         if Map.image2 == None:
             Map.image2 = load_image("map.png")
+        if Map.backgroundsound == None:
+           pass
 
     def draw(self):
         for i in range(0,21):
@@ -41,6 +44,7 @@ class Map:
     def playercheck(self, a):
         for monster in self.npc:
             monster.escape(a)
+            a.getdamage(monster)
 
     def returnnpc(self):
         return self.npc

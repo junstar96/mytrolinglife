@@ -18,6 +18,7 @@ class nonplayerable:
     attackup = None
     attackdown = None
     sound = None
+    deadimage = None
 
 
     typeA, typeB = 0, 1
@@ -76,6 +77,9 @@ class nonplayerable:
         if nonplayerable.attackdown == None:
             nonplayerable.attackdown = load_image("down.png")
 
+        if nonplayerable.deadimage == None:
+            nonplayerable.deadimage = load_image("dead.png")
+
 
 
 
@@ -95,9 +99,9 @@ class nonplayerable:
                 if self.emergy == True:
                     if self.attacktime > 0:
                         if self.attackvector == 0:
-                            self.attackdown.draw(self.x, self.y - (50 - self.attacktime), 9, 18)
+                            self.attackdown.draw(self.x, self.y - (50 - self.attacktime), 18, 9)
                         elif self.attackvector == 1:
-                            self.attackup.draw(self.x, self.y + (50 - self.attacktime), 9, 18)
+                            self.attackup.draw(self.x, self.y + (50 - self.attacktime), 18, 9)
             else:
                 self.item.dropdraw(self.x, self.y)
         elif self.type == nonplayerable.typeB:
@@ -119,6 +123,10 @@ class nonplayerable:
         if self.speak == False:
             self.sound.play()
             self.speak = True
+
+
+    def vec(self):
+        return self.attackvector
 
 
 

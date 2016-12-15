@@ -28,6 +28,7 @@ class Boy:
     def __init__(self):
         self.x, self.y = 400, 300
         self.ted = False
+        self.deadframe = 0
         self.xframe = 0
         self.yfream = 0
         self.left, self.right = self.LEFT_STAND, self.RIGHT_STAND
@@ -134,19 +135,22 @@ class Boy:
     def update(self, frametime):
         global line
         distence = Boy.pps * frametime
-        if self.first_y != 0 or self.first_x != 0:
-              self.xframe = (self.xframe + 1) % 4
-        if self.first_x == 1:
-            self.x = self.x - (distence)
-        elif self.first_x == 2:
-            self.x = self.x + (distence)
-        if self.first_y == 1:
-            self.y = self.y + (distence)
-        elif self.first_y == 2:
-            self.y = self.y - (distence)
+        if self.ted == False:
+            if self.first_y != 0 or self.first_x != 0:
+                self.xframe = (self.xframe + 1) % 4
+            if self.first_x == 1:
+                self.x = self.x - (distence)
+            elif self.first_x == 2:
+                self.x = self.x + (distence)
+            if self.first_y == 1:
+                self.y = self.y + (distence)
+            elif self.first_y == 2:
+                self.y = self.y - (distence)
 
-        if self.attacktime > 0:
-            self.attacktime = self.attacktime - 0.3
+            if self.attacktime > 0:
+                self.attacktime = self.attacktime - 0.3
+
+
 
     def draw(self):
         if self.ted != True:
@@ -173,20 +177,26 @@ class Boy:
 
 
 
+
     def get_bb(self):
         return self.x-15, self.y - 20, self.x + 15, self.y + 20
 
     def dead(self):
         self.ted = True
-        self.xframe = 0
+        self.deadframe = 0
 
     def fin(self):
         if self.ted == True:
             return True
 
     def getdamage(self, a):
-        self.life = self.life - 0.5 and self.xframe == 0
-        if self.life < 0:
+        targetx, targety = a.putpoint()
+        if targetx > self.x - 4 and targetx <= self.x +5:
+            if a.vec() == 0 and targety >= self.y and targety - 20 < self.y:
+                self.life = self.life - 0.5 and self.xframe == 0
+            elif a.vec() == 1 and targety <= self.y and targety + 20 > self.y:
+                self.life = self.life - 0.5 and self.xframe == 0
+        if self.life <= 0:
            self.dead()
 
     def putcount(self):
