@@ -121,7 +121,7 @@ class nonplayerable:
 
     def deadsound(self):
         if self.speak == False:
-            self.sound.play()
+            self.sound.play(1)
             self.speak = True
 
 
@@ -264,6 +264,7 @@ class nonplayerable:
         mathy = (self.y - (downy + 20))*(self.y - (downy + 20))
         self.targetx = downx + 15
         self.targety = downy + 20
+
 
         r = math.sqrt(mathx + mathy)
         if r < 100:

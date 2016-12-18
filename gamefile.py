@@ -21,7 +21,7 @@ map = None
 items = None
 current_time = 0.0
 font = None
-
+background = None
 line = None
 
 def get_frame_time():
@@ -38,10 +38,15 @@ def enter():
     global map
     global items, font
     global line
+    global background
     open_canvas()
     boy = Boy()
     map = [Map() for i in range(0, 25)]
     items = Item()
+    background = load_music("Arctic+Void+-+On+the+Padded+Wall.mp3")
+    background.set_volume(32)
+    background.repeat_play()
+
     line = 4
     font = load_font('ENCR10B.TTF', 30)
 
@@ -50,10 +55,12 @@ def exit():
     global map
     global items
     global font
+    global background
     del(boy)
     del(map)
     del(items)
     del(font)
+    del(background)
     close_canvas()
 
 def check():
@@ -119,6 +126,7 @@ def update(frametime):
     global boy
     global map
     global items
+    global background
 
     boy.update(frametime)
     map[line].update(frametime)
@@ -127,7 +135,7 @@ def update(frametime):
 
     check()
 
-    print(line)
+    print(background.get_volume())
 
     map[line].playercheck(boy)
 
