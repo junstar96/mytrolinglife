@@ -41,6 +41,7 @@ class Boy:
         self.life = 5
         self.killcount = 0
         self.safecount = 0
+        self.killtimer = 0
         if Boy.attackleft == None:
             Boy.attackleft = load_image("left.png")
         if Boy.attackright == None:
@@ -51,6 +52,8 @@ class Boy:
             Boy.attackdown = load_image("down.png")
         if Boy.font == None:
             Boy.font = load_font("ENCR10B.TTF", 25)
+
+
 
     def getattack(self):
         return self.attacktime
@@ -149,6 +152,9 @@ class Boy:
 
             if self.attacktime > 0:
                 self.attacktime = self.attacktime - 0.3
+        elif self.ted == True:
+            self.killtimer += 1
+            print(self.killtimer)
 
 
 
@@ -167,6 +173,10 @@ class Boy:
             elif self.yfream == 4:
                 self.attackup.draw(self.x, self.y + 20 + (20 - self.attacktime), 20, 10)
         self.font.draw(240, 30, "life : %d  kill : %d  safe : %d" % (self.life, self.killcount, self.safecount))
+        if self.killtimer >= 200:
+            self.font.draw(300, 400, "game over!  %d" % ((1200 - self.killtimer) / 100))
+            self.font.draw(300, 300, "score : %d" % (self.killcount))
+
 
 
     def get_kill(self):

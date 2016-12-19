@@ -9,6 +9,8 @@ import os
 from canplay import Boy
 import json
 from police import nonplayerable
+
+from soundfile import backgroundsound
 os.chdir('C:\\studyfolder\\mytrolinglife\\plise')
 
 
@@ -21,8 +23,8 @@ map = None
 items = None
 current_time = 0.0
 font = None
-background = None
 line = None
+background = None
 
 def get_frame_time():
 
@@ -43,9 +45,9 @@ def enter():
     boy = Boy()
     map = [Map() for i in range(0, 25)]
     items = Item()
-    background = load_music("Arctic+Void+-+On+the+Padded+Wall.mp3")
-    background.set_volume(32)
-    background.repeat_play()
+    background = backgroundsound()
+
+
 
     line = 4
     font = load_font('ENCR10B.TTF', 30)
@@ -55,12 +57,10 @@ def exit():
     global map
     global items
     global font
-    global background
     del(boy)
     del(map)
     del(items)
     del(font)
-    del(background)
     close_canvas()
 
 def check():
@@ -131,11 +131,13 @@ def update(frametime):
     boy.update(frametime)
     map[line].update(frametime)
 
+    if boy.killtimer > 1200:
+        myframe.quit()
+
     linewall()
 
     check()
 
-    print(background.get_volume())
 
     map[line].playercheck(boy)
 
