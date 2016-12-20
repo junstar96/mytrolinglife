@@ -2,6 +2,9 @@ from pico2d import *
 import myframe
 import gamefile
 
+
+
+
 name = "StartState"
 image = None
 logo_time = 0.0

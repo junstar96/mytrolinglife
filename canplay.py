@@ -153,6 +153,7 @@ class Boy:
             if self.attacktime > 0:
                 self.attacktime = self.attacktime - 0.3
         elif self.ted == True:
+            self.attacktime = 0
             self.killtimer += 1
             print(self.killtimer)
 
